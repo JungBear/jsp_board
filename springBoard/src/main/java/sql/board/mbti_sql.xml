@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mbti">
+    
+    <resultMap type="com.spring.board.vo.QuestionVo" id="questionVo">
+    	<result property="boardType" 	column="BOARD_TYPE"/>
+    	<result property="boardComment" column="BOARD_COMMENT"/>
+    </resultMap>
+    
+    <select id="questionList" parameterType="int" resultMap="questionVo">
+    	SELECT
+    		BOARD_TYPE,
+    		BOARD_COMMENT
+   		FROM (
+			    SELECT BOARD_TYPE, BOARD_COMMENT, ROWNUM AS RN
+			    FROM BOARD
+			)
+   		WHERE RN BETWEEN (#{page}-1) * 5 +1 AND (#{page}) * 5
+    </select>
+    
+   <select id="allQuestionList" resultMap="questionVo">
+   		SELECT BOARD_TYPE
+   		FROM (
+			    SELECT BOARD_TYPE, BOARD_COMMENT, ROWNUM AS RN
+			    FROM BOARD
+			)
+   </select>
+    
+
+</mapper>
