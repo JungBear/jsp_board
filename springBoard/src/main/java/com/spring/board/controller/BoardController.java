@@ -99,7 +99,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardWriteAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardWriteAction(Locale locale, BoardVo boardVo) throws Exception{
+	public String boardWriteAction(Locale locale, @RequestBody BoardVo boardVo) throws Exception{
 		
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();

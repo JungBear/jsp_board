@@ -79,15 +79,20 @@
 					Writer
 					</td>
 					<td>
+						${board.creator}
 					</td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 	<tr>
-		<td align="right">
-			<a href="/board/${board.boardType}/${board.boardNum}/boardUpdate.do">수정</a>
-		</td>
+		<c:choose>
+	        <c:when test="${sessionScope.user.userId eq board.creator}">
+				<td align="right">
+					<a href="/board/${board.boardType}/${board.boardNum}/boardUpdate.do">수정</a>
+				</td>
+	        </c:when>
+		</c:choose>
 		<td align="right">
 			<a href="/board/boardList.do">List</a>
 		</td>

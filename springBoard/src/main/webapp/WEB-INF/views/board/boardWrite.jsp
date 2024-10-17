@@ -12,16 +12,25 @@
 	$j(document).ready(function(){
 		
 		$j("#submit").on("click",function(){
-			var $frm = $j('.boardWrite :input');
 			
-			// codeId=a01&boardTitle=2&boardComment=2
-			var param = $frm.serialize();
+			var $boardType = $j("#boardType option:selected").val();
+			var $boardTitle = $j("#boardTitle").val();
+			var $boardComment = $j("#boardComment").val();
+			var $creator = ${sessionScope.user.userId};
+			
+			var formData = {
+					boardType: $boardType,
+					boardTitle: $boardTitle,
+					boardComment: $boardComment,
+					creator: $creator
+			};
 			
 			$j.ajax({
 			    url : "/board/boardWriteAction.do",
 			    dataType: "json",
+			    contentType : 'application/json',
 			    type: "POST",
-			    data : param,
+			    data : JSON.stringify(formData),
 			    success: function(data, textStatus, jqXHR)
 			    {
 					alert("작성완료");
@@ -56,7 +65,7 @@
 						Type
 						</td>
 						<td>
-							<select name="boardType">
+							<select name="boardType" id="boardType">
 							<c:forEach var="option" items="${menu}">
 								<option value="${option.codeId}">${option.codeName}</option>
 							</c:forEach>
@@ -68,7 +77,7 @@
 						Title
 						</td>
 						<td width="400">
-						<input name="boardTitle" type="text" size="50" value="${board.boardTitle}"> 
+						<input name="boardTitle" id="boardTitle" type="text" size="50" value="${board.boardTitle}"> 
 						</td>
 					</tr>
 					<tr>
@@ -76,7 +85,7 @@
 						Comment
 						</td>
 						<td valign="top">
-						<textarea name="boardComment"  rows="20" cols="55">${board.boardComment}</textarea>
+						<textarea name="boardComment" id="boardComment" rows="20" cols="55">${board.boardComment}</textarea>
 						</td>
 					</tr>
 					<tr>
@@ -84,6 +93,7 @@
 						Writer
 						</td>
 						<td>
+							<p id="creator">${sessionScope.user.userName}</p>
 						</td>
 					</tr>
 				</table>

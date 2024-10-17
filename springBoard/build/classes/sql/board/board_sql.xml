@@ -7,7 +7,7 @@
     	<result property="boardNum" 	column="BOARD_NUM"/>
     	<result property="boardTitle" 	column="BOARD_TITLE"/>
     	<result property="boardComment" column="BOARD_COMMENT"/>
-    	<result property="boardTypeName" column="BOARD_TYPE_NAME"/>
+    	<result property="boardTypeName" column="BOARD_TYPE_NAME"/>    	   	
     	<result property="numRow" column="NUMROW"/>    	
     	
     </resultMap>
@@ -58,7 +58,7 @@
    	 		B.BOARD_TYPE = C.CODE_ID
 		AND 
 			NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
-		ORDER BY NUMROW DESC
+		ORDER BY NUMROW ASC
     </select>
     
     <select id="boardTotal" parameterType="map" resultType="Integer">
@@ -80,10 +80,12 @@
 	        C.CODE_NAME AS BOARD_TYPE_NAME,
 	        B.BOARD_NUM,
 	        B.BOARD_TITLE,
-	        B.BOARD_COMMENT
+	        B.BOARD_COMMENT,
+	        U.USER_NAME AS CREATOR
 	    FROM
 	        BOARD B
 	    JOIN COM_CODE C ON B.BOARD_TYPE = C.CODE_ID
+	    LEFT JOIN USER_INFO U ON B.CREATOR = U.USER_ID
 	    WHERE B.BOARD_TYPE = #{boardType}
 	    AND   B.BOARD_NUM  = #{boardNum}
     </select>	
@@ -107,7 +109,7 @@
 	    WHERE BOARD_TYPE = #{boardType})
         ,#{boardTitle}
         ,#{boardComment}
-        ,'SYSTEM'
+        ,#{creator}
         ,TO_CHAR(SYSDATE)
         ,'SYSTEM'
         ,TO_CHAR(SYSDATE)

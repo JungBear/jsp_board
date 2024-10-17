@@ -27,6 +27,26 @@
 	            $all.prop('checked', true);
 	        }
         });
+		
+		$j("#logout").click(function(){
+			 $j.ajax({
+		            url: "/user/logout.do",
+		            type: "POST",
+					dataType: "json",
+		            success: function(data, textStatus, jqXHR) {
+		                if(data.success === "Y") {
+		                	alert("로그아웃되셨습니다.");
+		                    window.location.href = "/board/boardList.do"; 
+		                } else {
+		                    alert("로그아웃에 실패하였습니다.");
+		                }
+		            },
+		            error: function(xhr, status, error) {
+		                alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+		                console.error("Error: " + error);
+		            }
+		        });
+		});
 	});
 	
 
@@ -35,10 +55,17 @@
 <form id="form" method="GET" action="/board/boardList.do">
 	<table align="center">
 		<tr>
-			<td align="left">
-				<a href="/user/login.do">login</a>
-				<a href="">join</a>	
-			</td>
+			<td>
+				<c:choose>
+		            <c:when test="${sessionScope.user == null}">
+		                <a href="/user/login.do">login</a>
+		                <a href="/user/join.do">join</a>    
+		            </c:when>
+		            <c:otherwise>
+		                ${sessionScope.user.userName}
+		            </c:otherwise>
+		        </c:choose>
+        	</td>
 			<td align="right">
 				total : ${totalCnt}
 			</td>
@@ -76,6 +103,11 @@
 		<tr>
 			<td align="right">
 				<a href ="/board/boardWrite.do">글쓰기</a>
+				<c:choose>
+		            <c:when test="${sessionScope.user != null}">
+		                <span style="cursor: pointer;" id="logout">logout</span>
+		            </c:when>
+	            </c:choose>
 			</td>
 		</tr>
 		<tr align="left">
