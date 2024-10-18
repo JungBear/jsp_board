@@ -13,15 +13,31 @@
 		
 		$j("#submit").on("click",function(){
 			
-			var $boardType = $j("#boardType option:selected").val();
-			var $boardTitle = $j("#boardTitle").val();
-			var $boardComment = $j("#boardComment").val();
-			var $creator = ${sessionScope.user.userId};
+			var $boardType = $j("#boardType option:selected");
+			var $boardTitle = $j("#boardTitle");
+			var $boardComment = $j("#boardComment");
+			var $creator = "${sessionScope.user.userId}";
+			
+			function showError(message, $element) {
+			      alert(message);
+			      $element.focus();
+			  }
+			
+			if($boardTitle.val() === ''){
+				return showError("제목을 입력해주세요", $boardTitle);
+			};
+			if($boardTitle.val().length == 16 ){
+				return showError("제목은 최대 16자입니다.", $boardTitle);
+			};
+			if($boardComment.val() ===''){
+				return showError("내용을 입력해주세요", $boardComment);
+			};
+			
 			
 			var formData = {
-					boardType: $boardType,
-					boardTitle: $boardTitle,
-					boardComment: $boardComment,
+					boardType: $boardType.val(),
+					boardTitle: $boardTitle.val(),
+					boardComment: $boardComment.val(),
 					creator: $creator
 			};
 			
@@ -77,7 +93,7 @@
 						Title
 						</td>
 						<td width="400">
-						<input name="boardTitle" id="boardTitle" type="text" size="50" value="${board.boardTitle}"> 
+						<input name="boardTitle" id="boardTitle" maxlength="16" type="text" size="50" value="${board.boardTitle}"> 
 						</td>
 					</tr>
 					<tr>

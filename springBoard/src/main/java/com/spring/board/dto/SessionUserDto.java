@@ -26,6 +26,11 @@ public class SessionUserDto {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
+	@Override
+	public String toString() {
+		return "SessionUserDto [userId=" + userId + ", userName=" + userName + "]";
+	}
 	
 	
 }

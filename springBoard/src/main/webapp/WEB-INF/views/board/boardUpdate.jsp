@@ -9,6 +9,17 @@
 </head>
 <script type="text/javascript">
 	$j(document).ready(function(){
+		if(!${not empty sessionScope.user}){
+			console.log(1);
+			alert("로그인 후 가능한 서비스입니다.");
+			location.href = '/user/login.do';
+			return;
+		}
+		
+		function showError(message, $element) {
+			alert(message);
+			$element.focus();
+	  	}
 		
 		var originalTitle = "${board.boardTitle}";
         var originalComment = "${board.boardComment}";
@@ -17,20 +28,29 @@
         
 		$j('#submit').on("click", function(){
 			
-			var currentTitle = $j('input[name="boardTitle"]').val();
-            var currentComment = $j('textarea[name="boardComment"]').val();    
+			var $currentTitle = $j('input[name="boardTitle"]');
+            var $currentComment = $j('textarea[name="boardComment"]');    
+            
             
 			// 만약 메세지가 같다면 같다는 알림창 출력
-			if(originalTitle === currentTitle && originalComment === currentComment){
-				alert("변경된 내용이 없습니다. 변경후 다시 시도해 주세요.");
-				return;
+			if(originalTitle === $currentTitle.val() && originalComment === $currentComment.val()){
+				return showError("변경된 내용이 없습니다. 변경후 다시 시도해 주세요.", $currentTitle);
 			}
+			if($currentTitle.val() === ''){
+				return showError("제목을 입력해주세요", $currentTitle);
+			};
+			if($currentTitle.val().length == 16 ){
+				return showError("제목은 최대 16자입니다.", $currentTitle);
+			};
+			if($currentComment.val() ===''){
+				return showError("내용을 입력해주세요", $currentComment);
+			};
 				
 			let param = {
 					boardType: type,
 					boardNum: num,
-					boardTitle: currentTitle,
-					boardComment: currentComment
+					boardTitle: $currentTitle.val(),
+					boardComment: $currentComment.val()
 			};
 			
 			$j.ajax({
@@ -40,9 +60,15 @@
 				type: "POST",
 				data: JSON.stringify(param),
 				success: function(data, textStatus, jqXHR){
-					alert("수정완료");
-					alert("메세지:" + data.success);
-					location.href="/board/boardList.do?pageNo=";
+					if(data.success === "Y"){						
+						alert("수정완료");
+						alert("메세지:" + data.success);
+						location.href="/board/boardList.do?pageNo=";
+					}else {
+						if(data.message === "401"){
+							alert("로그인 후 다시 시도해주세요.");						
+						}
+					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){
 					alert("실패");
@@ -86,6 +112,7 @@
 						Writer
 						</td>
 						<td>
+							${board.creatorName}
 						</td>
 					</tr>
 				</table>

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.board.HomeController;
+import com.spring.board.dto.SessionUserDto;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.OptionVo;
@@ -115,7 +118,12 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardUpdate.do", method = RequestMethod.GET)
-	public String boardUpdate(Locale locale, Model model, BoardVo boardVo) throws Exception{
+	public String boardUpdate(Locale locale, Model model, BoardVo boardVo, HttpSession session) throws Exception{
+		
+//		System.out.println((SessionUserDto)session.getAttribute("user"));
+//		if(session.getAttribute("user") == null) {
+//			return "redirect:/user/login.do";
+//		}
 		
 		BoardVo board = new BoardVo();
 		board = boardService.selectBoard(boardVo.getBoardType(), boardVo.getBoardNum());
@@ -127,15 +135,26 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardUpdateAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardUpdateAction(Locale locale,@RequestBody BoardVo boardVo) throws Exception{
+	public String boardUpdateAction(Locale locale,@RequestBody BoardVo boardVo, HttpSession session) throws Exception{
 		
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
+		SessionUserDto user = (SessionUserDto) session.getAttribute("user"); 
+		String callbackMsg;
+		
+		if(user == null) {
+			result.put("success", "N");
+			result.put("message", "401");
+			callbackMsg = commonUtil.getJsonCallBackString(" ", result);
+			return callbackMsg;
+		}
+		
+		boardVo.setModifier(user.getUserId());
 		
 		int resultCnt = boardService.boardUpdate(boardVo);
 		
 		result.put("success", (resultCnt == 1)? "Y" : "n");
-		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
+		callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 		
 		return callbackMsg;
 	}

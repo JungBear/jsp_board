@@ -11,9 +11,22 @@
 <script type="text/javascript">
 	$j(document).ready(function(){
 		
+		$j("#updateBtn").click(function(e){
+			e.preventDefault();
+			
+			var href = $j(this).attr('href');
+			
+			if(!${not empty sessionScope.user}){
+				alert("로그인 후 가능한 서비스입니다.");
+				return;
+			}
+			
+			location.href = href;
+			
+		})
+		
 		var type = "${board.boardType}";
 		var num = "${board.boardNum}";
-		console.log(type);
 		$j('#submit').on("click", function(){
 			
 			if(!confirm("정말 삭제하시겠습니까?")){
@@ -79,27 +92,24 @@
 					Writer
 					</td>
 					<td>
-						${board.creator}
+						${board.creatorName}
 					</td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 	<tr>
-		<c:choose>
-	        <c:when test="${sessionScope.user.userId eq board.creator}">
-				<td align="right">
-					<a href="/board/${board.boardType}/${board.boardNum}/boardUpdate.do">수정</a>
-				</td>
-	        </c:when>
-		</c:choose>
 		<td align="right">
 			<a href="/board/boardList.do">List</a>
+			<a id="updateBtn" href="/board/${board.boardType}/${board.boardNum}/boardUpdate.do">update</a>
+			<c:choose>
+		        <c:when test="${sessionScope.user.userId eq board.creator}">
+					<td align="right">
+						<input id="submit" type="button" value="삭제">
+					</td>				
+		        </c:when>
+			</c:choose>
 		</td>
-		<td align="right">
-			<input id="submit" type="button" value="삭제">
-		</td>
-		
 	</tr>
 </table>	
 </body>

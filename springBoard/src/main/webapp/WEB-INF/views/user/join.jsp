@@ -29,6 +29,9 @@
 	        if ($userId.val() === "") {
 	            return showError("아이디를 입력해주세요.", $userId);
 	        }
+	        if(/[^A-Za-z0-9]/ig.test($userId.val())){
+	        	return showError("아이디는 영어와 숫자만 가능합니다.", $userId);
+	        }
 	        
 	        var data = {userId: $userId.val()};
 			
@@ -60,53 +63,28 @@
 			console.log("중복확인 요청: " + $userId.val());
 		});
 		
- 		$j("#userId").keypress(function(event) {
-		    var charCode = event.which;
-		    if ((charCode < 48 || charCode > 57) &&  // 숫자
-		        (charCode < 65 || charCode > 90) &&  // 대문자
-		        (charCode < 97 || charCode > 122)) { // 소문자
-		        event.preventDefault();
-		    }
-		});
+
 		$j("#userId").keyup(function() {
-			this.value = this.value.replace( /[^A-Za-z0-9]/g, '');
+			this.value = this.value.replace( /[^A-Za-z0-9]/ig, '');
 		    
 		    idCheck = false;
 		}); 
 	
-		$j("#userPhone2").keypress(function(event) {
-		    if (event.which < 48 || event.which > 57) {
-		      event.preventDefault();
-		    }
-		});
+
 		$j("#userPhone2").keyup(function() {
 		    this.value = this.value.replace(/[^0-9]/g, '');
 	  	});
 	   
-		$j("#userPhone3").keypress(function(event) {
-		    if (event.which < 48 || event.which > 57) {
-		      event.preventDefault();
-		    }
-		});
+
 		$j("#userPhone3").keyup(function() {
 	    	this.value = this.value.replace(/[^0-9]/g, '').substr(0,5);
 	  	}); 
 	
-		$j("#userName").keypress(function(event) {
-		    if (!event.which < 48 || !event.which > 57) {
-		      event.preventDefault();
-		    }
-		});
+
 		$j("#userName").keyup(function() {
-			this.value = this.value.replace( /[0-9]/g, '').substr(0,5);
+			this.value = this.value.replace( /[A-Za-z0-9]/g, '').substr(0,5);
 		});
 
-		   
-		$j("#userAddr1").keypress(function(event) {
-	        if ((event.which < 48 || event.which > 57) && event.which !== 45) {
-	            event.preventDefault();
-	        }
-	    });
 		$j("#userAddr1").keyup(function() {
 		    var value = this.value.replace(/[^0-9]/g, '');
 		    
@@ -118,23 +96,9 @@
 		    this.value = value;
 		});
 		
-/* 		$j("#userAddr2").keypress(function(event) {
-		    if (!event.which < 48 || !event.which > 57) {
-		      event.preventDefault();
-		    }
-		}); */
 		$j("#userAddr2").keyup(function() {
 			this.value = this.value.replace( /[A-Za-z]/g, '').substr(0,50);
 		});
-		
-		$j("#userCompany").keyup(function() {
-			this.value = this.value.replace( /[0-9]/g, '').substr(0,20);
-		});
-		$j("#userCompany").keypress(function(event) {
-	        if ((event.which < 48 || event.which > 57) && event.which !== 45) {
-	            event.preventDefault();
-	        }
-	    });
 
 		$j("#submitBtn").click(function(){
 			var $userId = $j("#userId");
@@ -148,53 +112,55 @@
 			var $userAddr2 = $j("#userAddr2");
 			var $userCompany = $j("#userCompany");
 			
-			if ($userId.val() === "") {
+			if($userId.val() === "") {
 	            return showError("아이디를 입력해주세요.", $userId);
-	        }
+	        };
 			if(!idCheck){
 				return showError("아이디 중복확인을 진행해주세요.",$userId);
-			}
-	        if ($userId.val() !== lastCheckedId) {
+			};
+	        if($userId.val() !== lastCheckedId) {
 	            return showError("아이디 중복확인을 다시 진행해주세요.", $userId);
-	        }
+	        };
 	        
-	        if ($userPw.val() === "") {
+	        if($userPw.val() === "") {
 	            return showError("비밀번호를 입력해주세요.", $userPw);
-	        }
-	        if ($userPw.val().length < 6 || $userPw.val().length > 12) {
+	        };
+	        if($userPw.val().length < 6 || $userPw.val().length > 12) {
 	            return showError("비밀번호는 6자리 ~ 12자리여야 합니다.", $userPw);
-	        }
+	        };
 	        
-	        if ($pwCheck.val() === "") {
+	        if($pwCheck.val() === "") {
 	            return showError("비밀번호확인을 입력해주세요.", $pwCheck);
-	        }
-	        if ($userPw.val() !== $pwCheck.val()) {  
+	        };
+	        if($userPw.val() !== $pwCheck.val()) {  
 	            ispwCheck = false;
 	            return showError("비밀번호가 일치하지 않습니다.", $pwCheck);
 	        } else {
 	            ispwCheck = true;
-	        }
+	        };
 	        
-	        if ($userName.val() === "") {
+	        if($userName.val() === "") {
 	            return showError("이름을 입력해주세요.", $userName);
-	        }	        
+	        };        
 	        
-	        if ($userPhone2.val().length !== 4) {
+	        if($userPhone2.val().length !== 4) {
 	            return showError("전화번호는 각각 4자리여야 합니다.", $userPhone2);
-	        }
+	        };
 	        if($userPhone3.val().length !== 4){
 	        	return showError("전화번호는 각각 4자리여야 합니다.", $userPhone3);
-	        }
-	        if (!/^\d+$/.test($userPhone2.val()) || !/^\d+$/.test($userPhone3.val())) {
+	        };
+	        if(!/^\d+$/.test($userPhone2.val()) || !/^\d+$/.test($userPhone3.val())) {
 	            return showError("전화번호는 숫자만 입력해주세요.", $userPhone2);
-	        }
+	        };
 	        
 	        if($userAddr1.val() === ""){
 	        	return showError("우편번호를 입력해주세요", $userAddr1);
-	        }
-	        if ($userAddr1.val() !== "" && !(/^\d{3}-\d{3}$/.test($userAddr1.val()))) {
+	        };
+	        
+	        if($userAddr1.val() !== "" && !(/^\d{3}-\d{3}$/.test($userAddr1.val()))) {
 	            return showError("우편번호는 XXX-XXX 형식이어야 합니다.", $userAddr1);
-	        }  
+	        };  
+	        
 			
 	        var formData = {
 	        	userId: $userId.val(),
@@ -304,7 +270,7 @@
 							postNo
 						</td>
 						<td>
-							<input name="userAddr1" id="userAddr1" type="text"> 
+							<input name="userAddr1" id="userAddr1" type="text" maxlength="7"> 
 						</td>
 					</tr>
 					
@@ -313,7 +279,7 @@
 							address
 						</td>
 						<td>
-							<input name="userAddr2" id="userAddr2" type="text"> 
+							<input name="userAddr2" id="userAddr2" type="text" maxlength="50"> 
 						</td>
 					</tr>
 					

@@ -12,7 +12,21 @@
 		$j('#all').on('change', function(){
 			var isChecked = $j('#all').is(':checked');
 			$j('.boardType').prop('checked', isChecked);
-		})
+		});
+		
+		$j('#writeBtn').click(function(e){
+			e.preventDefault();
+			
+			var href = $j(this).attr('href');
+			
+			if(!${not empty sessionScope.user}){
+				alert("로그인 후 가능한 서비스입니다.");
+				return;
+			}
+			
+			location.href = href;
+		});
+		
         $j('.boardType').on('change', function() {
 		 	var $all = $j('#all');
 	        var $types = $j('.boardType');
@@ -90,7 +104,7 @@
 								${list.boardTypeName}
 							</td>
 							<td>
-								${list.boardNum}
+								${list.numRow}
 							</td>
 							<td>
 								<a href = "/board/${list.boardType}/${list.boardNum}/boardView.do?pageNo=${pageNo}">${list.boardTitle}</a>
@@ -102,7 +116,7 @@
 		</tr>
 		<tr>
 			<td align="right">
-				<a href ="/board/boardWrite.do">글쓰기</a>
+				<a id="writeBtn" href ="/board/boardWrite.do">글쓰기</a>
 				<c:choose>
 		            <c:when test="${sessionScope.user != null}">
 		                <span style="cursor: pointer;" id="logout">logout</span>

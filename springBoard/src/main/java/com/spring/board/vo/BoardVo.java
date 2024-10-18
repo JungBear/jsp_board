@@ -8,6 +8,8 @@ public class BoardVo {
 	private String 	boardTitle;
 	private String 	boardComment;
 	private String 	creator;
+	private String 	createTime;
+	private String 	creatorName;
 	private String	modifier;
 	private int totalCnt;
 	private int numRow;
@@ -69,12 +71,29 @@ public class BoardVo {
 	public void setBoardTypeName(String boardTypeName) {
 		this.boardTypeName = boardTypeName;
 	}
+	public String getCreatorName() {
+		return creatorName;
+	}
+	public void setCreatorName(String creatorName) {
+		this.creatorName = creatorName;
+	}
+	
+	
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
 	@Override
 	public String toString() {
 		return "BoardVo [boardType=" + boardType + ", boardTypeName=" + boardTypeName + ", boardNum=" + boardNum
 				+ ", boardTitle=" + boardTitle + ", boardComment=" + boardComment + ", creator=" + creator
-				+ ", modifier=" + modifier + ", totalCnt=" + totalCnt + ", numRow=" + numRow + "]";
+				+ ", creatorName=" + creatorName + ", modifier=" + modifier + ", totalCnt=" + totalCnt + ", numRow="
+				+ numRow + "]";
 	}
+
+	
 
 
 	
