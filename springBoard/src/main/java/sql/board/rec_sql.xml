@@ -15,6 +15,37 @@
     	<result property="submit" column="SUBMIT" />
     </resultMap>
     
+    <resultMap type="com.spring.board.vo.EducationVo" id="educationVo">
+    	<result property="eduSeq" column="EDU_SEQ"/>
+    	<result property="seq" column="SEQ"/>
+    	<result property="schoolName" column="SCHOOL_NAME"/>
+    	<result property="division" column="DIVISION"/>
+    	<result property="startPeriod" column="START_PERIOD"/>
+    	<result property="endPeriod" column="END_PERIOD"/>
+    	<result property="major" column="MAJOR"/>
+    	<result property="grade" column="GRADE"/>
+    	<result property="location" column="LOCATION"/>	
+    </resultMap>
+    
+    <resultMap type="com.spring.board.vo.CareerVo" id="careerVo">
+    	<result property="carSeq" column="CAR_SEQ"/>
+    	<result property="seq" column="SEQ"/>
+    	<result property="compName" column="COMP_NAME"/>
+    	<result property="location" column="LOCATION"/>
+    	<result property="startPeriod" column="START_PERIOD"/>
+    	<result property="endPeriod" column="END_PERIOD"/>
+    	<result property="task" column="TASK"/>
+    	<result property="salary" column="SALARY"/>
+    </resultMap>
+    
+    <resultMap type="com.spring.board.vo.CertificateVo" id="certificateVo">
+    	<result property="certSeq" column="CERT_SEQ" />
+    	<result property="seq" column="SEQ" />
+    	<result property="qualifiName" column="QUALIFI_NAME" />
+    	<result property="acquDate" column="ACQU_DATE" />
+    	<result property="organizeName" column="ORGANIZE_NAME" />
+    </resultMap>
+    
     <select id="selectByNameAndPhone" parameterType="com.spring.board.vo.RecruitVo" resultMap="recruitVo">
     	SELECT 
     		SEQ,
@@ -41,16 +72,75 @@
    		(
    			SEQ,
    			NAME,
-   			PHONE
+   			PHONE,
+   			SUBMIT
    		)
    		VALUES
    		(
    			(SELECT NVL(MAX(SEQ), 0)+1
 		    FROM RECRUIT),
 		    #{name},
-		    #{phone}
+		    #{phone},
+		    'N'
    		)
     </insert>
+    
+    <select id="selectBySeq" resultMap="recruitVo">
+    	SELECT
+    		SEQ,
+    		NAME,
+    		BIRTH,
+    		GENDER,
+    		PHONE,
+    		EMAIL,
+    		ADDR,
+    		LOCATION,
+    		WORK_TYPE
+		FROM 
+			RECRUIT
+		WHERE 
+			SEQ = #{seq}
+    </select>
+    
+    <select id="selectFromEducationBySeq" resultMap="educationVo">
+    	SELECT
+    		SCHOOL_NAME,
+    		DIVISION,
+    		START_PERIOD,
+    		END_PERIOD,
+    		MAJOR,
+    		GRADE,
+    		LOCATION
+   		FROM 
+   			EDUCATION
+   		WHERE 
+   			SEQ = #{seq}
+    </select>
+    
+    <select id="selectFromCarerrBySeq" resultMap="careerVo">
+    	SELECT
+    		COMP_NAME,
+    		LOCATION,
+    		START_PERIOD,
+    		END_PERIOD,
+    		TASK,
+    		SALARY
+		FROM 
+			CAREER
+		WHERE 
+			SEQ = #{seq}
+    </select>
+    
+    <select id="selectFromCertificateBySeq" resultMap="certificateVo">
+    	SELECT
+    		QUALIFI_NAME,
+    		ACQU_DATE,
+    		ORGANIZE_NAME
+   		FROM 
+   			CERTIFICATE
+		WHERE
+			SEQ = #{seq}
+    </select>
     
     
 </mapper>

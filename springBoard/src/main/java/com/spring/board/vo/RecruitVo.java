@@ -10,7 +10,7 @@ public class RecruitVo {
     private String addr;
     private String location;
     private String workType;
-    private boolean submit;
+    private String submit;
     
 	public String getSeq() {
 		return seq;
@@ -60,10 +60,10 @@ public class RecruitVo {
 	public void setWorkType(String workType) {
 		this.workType = workType;
 	}
-	public boolean getSubmit() {
+	public String getSubmit() {
 		return submit;
 	}
-	public void setSubmit(boolean submit) {
+	public void setSubmit(String submit) {
 		this.submit = submit;
 	}
 	public String getGender() {
