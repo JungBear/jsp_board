@@ -46,4 +46,49 @@ public class RecDaoImpl implements RecDao{
 	public List<CertificateVo> selectFromCertificateBySeq(String seq) {
 		return sqlSession.selectList("rec.selectFromCertificateBySeq", seq);
 	}
+	
+	@Override
+	public int insertRecruits(RecruitVo recruitVo) {
+		return sqlSession.insert("rec.insertRecruits", recruitVo);
+	}
+	
+	@Override
+	public int insertEducations(EducationVo educationVos) {
+		return sqlSession.insert("rec.insertEducations", educationVos);
+	}
+	
+	@Override
+	public int insertCareers(CareerVo careerVos) {
+		return sqlSession.insert("rec.insertCareers", careerVos);
+	}
+	
+	@Override
+	public int insertCertificates(CertificateVo certificateVos) {
+		return sqlSession.insert("rec.insertCertificates", certificateVos);
+	}
+	
+	@Override
+	public int updateRecruit(RecruitVo recruitVo) {
+		return sqlSession.update("rec.updateRecruit", recruitVo);
+	}
+	
+	@Override
+	public int deleteEducationsBySeq(String seq) {
+		return sqlSession.delete("rec.deleteEducationsBySeq", seq);
+	}
+	
+	@Override
+	public int deleteCareersBySeq(String seq) {
+		return sqlSession.delete("rec.deleteCareersBySeq", seq);
+	}
+	
+	@Override
+	public int deleteCertificatesBySeq(String seq) {
+		return sqlSession.delete("rec.deleteCertificatesBySeq", seq);
+	}
+	
+	@Override
+	public int updateSubmit(String seq) {
+		return sqlSession.update("rec.updateSubmit", seq);
+	}
 }

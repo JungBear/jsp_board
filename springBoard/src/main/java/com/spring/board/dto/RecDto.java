@@ -36,7 +36,13 @@ public class RecDto {
 	public void setCertificates(List<CertificateVo> certificates) {
 		this.certificates = certificates;
 	}
+	@Override
+	public String toString() {
+		return "RecDto [recruit=" + recruit + ", educations=" + educations + ", careers=" + careers + ", certificates="
+				+ certificates + "]";
+	}
 
+	
 	
 	
 }

@@ -77,11 +77,11 @@
    		)
    		VALUES
    		(
-   			(SELECT NVL(MAX(SEQ), 0)+1
-		    FROM RECRUIT),
+   			(SELECT MAX(TO_NUMBER(NVL(SEQ, '0')))+1
+    		FROM RECRUIT),
 		    #{name},
 		    #{phone},
-		    'N'
+		    'F'
    		)
     </insert>
     
@@ -95,7 +95,8 @@
     		EMAIL,
     		ADDR,
     		LOCATION,
-    		WORK_TYPE
+    		WORK_TYPE,
+    		SUBMIT
 		FROM 
 			RECRUIT
 		WHERE 
@@ -142,5 +143,134 @@
 			SEQ = #{seq}
     </select>
     
+    <insert id="insertRecruits" parameterType="com.spring.board.vo.RecruitVo">
+    	INSERT INTO
+   		RECRUIT
+   		(
+   			BIRTH,
+   			GENDER,
+   			EMAIL,
+   			ADDR,
+   			LOCATION,
+   			WORK_TYPE
+   		)
+   		VALUES
+   		(
+   			#{birth},
+   			#{gender},
+   			#{email},
+   			#{addr},
+   			#{location},
+   			#{workType}
+   		)
+    </insert>
+    
+	<insert id="insertEducations" parameterType="com.spring.board.vo.EducationVo">
+	    INSERT INTO 
+	    EDUCATION (
+	        EDU_SEQ,
+	        SEQ,
+	        START_PERIOD,
+	        END_PERIOD,
+	        SCHOOL_NAME,
+	        LOCATION,
+	        DIVISION,
+	        MAJOR,
+	        GRADE
+	    )VALUES(
+            (SELECT NVL(MAX(EDU_SEQ), 0)+1 FROM EDUCATION),
+            #{seq},
+            #{startPeriod},
+            #{endPeriod},
+            #{schoolName},
+            #{location},
+            #{division},
+            #{major},
+            #{grade}
+		)
+	</insert>	
+    
+    <insert id="insertCareers" parameterType="com.spring.board.vo.CareerVo">
+    	INSERT INTO
+    	CAREER
+    	(
+    		CAR_SEQ,
+    		SEQ,
+    		COMP_NAME,
+    		LOCATION,
+    		START_PERIOD,
+    		END_PERIOD,
+    		TASK,
+    		SALARY
+    	)VALUES(
+			(SELECT NVL(MAX(CAR_SEQ), 0)+1
+		    FROM CAREER),
+		    #{seq},
+		    #{compName},
+		    #{location},
+		    #{startPeriod},
+		    #{endPeriod},
+		    #{task},
+		    '1'		
+	    )
+    </insert>
+    
+    <insert id="insertCertificates" parameterType="com.spring.board.vo.CertificateVo">
+    	INSERT INTO
+    	CERTIFICATE
+    	(
+    		CERT_SEQ,
+    		SEQ,
+    		QUALIFI_NAME,
+    		ACQU_DATE,
+    		ORGANIZE_NAME
+    	)VALUES
+		(
+			(SELECT NVL(MAX(CERT_SEQ), 0)+1
+		    FROM CERTIFICATE),
+		    #{seq},
+		    #{qualifiName},
+		    #{acquDate},
+		    #{organizeName}
+		 )
+
+    </insert>
+    
+    <update id="updateRecruit" parameterType="com.spring.board.vo.RecruitVo">
+    	UPDATE RECRUIT
+    	SET
+    		BIRTH = #{birth},
+    		GENDER = #{gender},
+    		EMAIL = #{email},
+    		ADDR = #{addr},
+    		LOCATION = #{location},
+    		WORK_TYPE = #{workType},
+    		SUBMIT = 'S'
+    	WHERE
+    		SEQ = #{seq}
+    </update>
+    
+    <delete id="deleteEducationsBySeq">
+    	DELETE FROM EDUCATION
+    	WHERE SEQ = #{seq}
+    </delete>
+    
+    <delete id="deleteCareersBySeq">
+    	DELETE FROM CAREER
+    	WHERE SEQ = #{seq}
+    </delete>
+
+    <delete id="deleteCertificatesBySeq">
+ 	    DELETE FROM CERTIFICATE
+    	WHERE SEQ = #{seq}
+    </delete>
+    
+    <update id="updateSubmit">
+    	UPDATE RECRUIT
+    	SET
+    		SUBMIT = 'T'
+  		WHERE 
+  			SEQ = #{seq}
+    </update>
     
 </mapper>

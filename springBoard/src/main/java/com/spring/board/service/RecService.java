@@ -2,6 +2,7 @@ package com.spring.board.service;
 
 import java.util.List;
 
+import com.spring.board.dto.RecDto;
 import com.spring.board.vo.CareerVo;
 import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.EducationVo;
@@ -20,4 +21,6 @@ public interface RecService {
 	public List<CareerVo> getCarrer(String seq);
 	
 	public List<CertificateVo> getCertificate(String seq);
+	
+	public boolean save(RecDto recDto, String action);	
 }

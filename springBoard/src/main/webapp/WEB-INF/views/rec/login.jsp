@@ -33,8 +33,13 @@
 			}
 			
 			if($phone.val() == ""){
-				alert("휴대폰번호를 입력해주세요.");
+				alert("휴대폰 번호를 입력해주세요.");
 				$phone.focus();
+				return;
+			}
+			
+			if($phone.val().length < 11){
+				alert("휴대폰 번호는 11자리입니다.\n예) 01012345678");
 				return;
 			}
 			
@@ -63,6 +68,7 @@
 				                break;
 				            case "SUBMITTED":
 				                alert("이미 제출하셨습니다.");
+				                window.location.href = "/rec/main.do";
 				                break;
 						}
 		            } else {
